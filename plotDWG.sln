@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plotDWG", "plotDWG.csproj", "{C621A7F7-EA95-4E69-81B0-98B60C19912D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C621A7F7-EA95-4E69-81B0-98B60C19912D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C621A7F7-EA95-4E69-81B0-98B60C19912D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C621A7F7-EA95-4E69-81B0-98B60C19912D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C621A7F7-EA95-4E69-81B0-98B60C19912D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {185041F4-173E-41A0-8F06-9C93B7BEE982}
+	EndGlobalSection
+EndGlobal
