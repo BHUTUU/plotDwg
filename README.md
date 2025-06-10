@@ -62,7 +62,7 @@ The project is built using:
 
 ## License
 
-This project is licensed under the terms included in the LICENSE file.
+This project is licensed under [MIT License](https://github.com/BHUTUU/plotDwg/blob/main/LICENSE).
 
 ## Contributing
 
