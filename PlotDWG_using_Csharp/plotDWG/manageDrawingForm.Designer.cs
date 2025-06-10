@@ -1,6 +1,6 @@
 ﻿namespace plotDWG
 {
-    partial class manageDrawingForm
+    partial class ManageDrawingForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,20 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(manageDrawingForm));
-            SuspendLayout();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManageDrawingForm));
+            this.SuspendLayout();
             // 
-            // manageDrawingForm
+            // ManageDrawingForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(64, 64, 64);
-            ClientSize = new Size(534, 450);
-            ForeColor = Color.WhiteSmoke;
-            Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "manageDrawingForm";
-            Text = "Manage Drawings";
-            ResumeLayout(false);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ClientSize = new System.Drawing.Size(773, 450);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "ManageDrawingForm";
+            this.Text = "Manage Drawings";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
