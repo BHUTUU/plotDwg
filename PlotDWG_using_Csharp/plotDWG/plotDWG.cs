@@ -62,7 +62,7 @@ namespace plotDWG
 
             } else
             {
-                Close();
+                Environment.Exit(0);
             }
 
         }
