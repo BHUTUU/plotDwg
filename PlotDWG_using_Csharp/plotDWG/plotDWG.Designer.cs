@@ -104,6 +104,7 @@
             this.layoutSizeDropDownBtn.Size = new System.Drawing.Size(105, 27);
             this.layoutSizeDropDownBtn.TabIndex = 4;
             this.layoutSizeDropDownBtn.Text = "SIZE";
+            this.layoutSizeDropDownBtn.SelectedIndexChanged += new System.EventHandler(this.layoutSizeDropDownBtn_SelectedIndexChanged);
             // 
             // layoutOrientationDropDownBtn
             // 
@@ -115,6 +116,7 @@
             this.layoutOrientationDropDownBtn.Size = new System.Drawing.Size(154, 27);
             this.layoutOrientationDropDownBtn.TabIndex = 5;
             this.layoutOrientationDropDownBtn.Text = "ORIENTATION";
+            this.layoutOrientationDropDownBtn.SelectedIndexChanged += new System.EventHandler(this.layoutOrientationDropDownBtn_SelectedIndexChanged);
             // 
             // outputFolderText
             // 
@@ -197,6 +199,7 @@
             this.prefixCheckBtn.TabIndex = 12;
             this.prefixCheckBtn.Text = "PREFIX:";
             this.prefixCheckBtn.UseVisualStyleBackColor = true;
+            this.prefixCheckBtn.CheckedChanged += new System.EventHandler(this.prefixCheckBtn_CheckedChanged);
             // 
             // suffixCheckBtn
             // 
@@ -209,6 +212,7 @@
             this.suffixCheckBtn.TabIndex = 13;
             this.suffixCheckBtn.Text = "SUFFIX:";
             this.suffixCheckBtn.UseVisualStyleBackColor = true;
+            this.suffixCheckBtn.CheckedChanged += new System.EventHandler(this.suffixCheckBtn_CheckedChanged);
             // 
             // prefixEntry
             // 
@@ -236,6 +240,7 @@
             this.lauchBtn.TabIndex = 16;
             this.lauchBtn.Text = "LAUNCH";
             this.lauchBtn.UseVisualStyleBackColor = false;
+            this.lauchBtn.Click += new System.EventHandler(this.lauchBtn_Click);
             // 
             // PlotDWG
             // 

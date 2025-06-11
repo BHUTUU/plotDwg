@@ -15,7 +15,8 @@ namespace plotDWG
     public partial class PlotDWG : Form
     {
         List<string> selectedDWGFiles = new List<string>();
-        string plotSizeOrientation = string.Empty;
+        string paperSize = string.Empty;
+        string paperOrientation = string.Empty;
         string outputFolderPath = string.Empty;
         string autocadSoftwareYear = string.Empty;
         string autocadCTBfilePath = string.Empty;
@@ -215,7 +216,6 @@ namespace plotDWG
                             }
                         } else
                         {
-                            File.Delete(destPath);
                             File.Copy(ctbFileBrowsed, destPath);
                             MessageBox.Show("CTB file added to AutoCAD inventory!", "Success");
                         }
@@ -231,5 +231,130 @@ namespace plotDWG
             }
         }
 
+        private void layoutSizeDropDownBtn_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            paperSize = layoutSizeDropDownBtn.SelectedItem.ToString();
+        }
+
+        private void layoutOrientationDropDownBtn_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            paperOrientation = layoutOrientationDropDownBtn.SelectedItem.ToString();
+        }
+
+        private void prefixCheckBtn_CheckedChanged(object sender, EventArgs e)
+        {
+            if(prefixCheckBtn.Checked)
+            {
+                prefixEntry.Enabled = true;
+            }
+            else
+            {
+                prefixEntry.Enabled = false;
+            }
+        }
+
+        private void suffixCheckBtn_CheckedChanged(object sender, EventArgs e)
+        {
+            if(suffixCheckBtn.Checked)
+            {
+                suffixEntry.Enabled = true;
+            }
+            else
+            {
+                suffixEntry.Enabled = false;
+            }
+        }
+
+        private void lauchBtn_Click(object sender, EventArgs e)
+        {
+            if (drawingsToPlot.Count == 0)
+            {
+                MessageBox.Show("No drawings selected. Please select drawings to plot.", "Invalid Input");
+                return;
+            }
+            if (string.IsNullOrEmpty(paperSize) || string.IsNullOrEmpty(paperOrientation))
+            {
+                MessageBox.Show("Please select paper size and orientation.", "Invalid Input");
+                return;
+            }
+            if (string.IsNullOrEmpty(outputFolderPath))
+            {
+                MessageBox.Show("Please select an output folder.", "Invalid Input");
+                return;
+            }
+            if (string.IsNullOrEmpty(autocadSoftwareYear) || string.IsNullOrEmpty(autocadCTBfilePath))
+            {
+                MessageBox.Show("AutoCAD software year or CTB file path unable to determine. Please inform to Suman Kumar ~BHUTUU", "Interal Error");
+                return;
+            }
+            if (string.IsNullOrEmpty(selectedCTBfile))
+            {
+                MessageBox.Show("Please select a CTB file.", "Invalid Input");
+                return;
+            }
+            if (prefixCheckBtn.Checked && string.IsNullOrEmpty(prefixEntry.Text))
+            {
+                MessageBox.Show("Please enter a prefix for the output file names.", "Invalid Input");
+                return;
+            }
+            if (suffixCheckBtn.Checked && string.IsNullOrEmpty(suffixEntry.Text))
+            {
+                MessageBox.Show("Please enter a suffix for the output file names.", "Invalid Input");
+                return;
+            }
+            try
+            {
+                foreach(string fileToPlot in drawingsToPlot)
+                {
+                    // I will call plotter method after it get prepared.
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while preparing to plot: " + ex.Message, "Error");
+                return;
+            }
+        }
     }
+
+    public class AutoCAD
+    {
+        private dynamic acad;
+        private dynamic doc;
+        private string acadFilePath;
+
+        public AutoCAD(string filePath)
+        {
+            acadFilePath = filePath;
+            acad = Marshal.GetActiveObject("AutoCAD.Application");
+            if (acad == null)
+            {
+                throw new Exception("AutoCAD is not running.");
+            }
+            acad.Visible = true;
+            doc = acad.Documents.Open(filePath);
+        }
+        
+        public List<string> GetLayoutNames()
+        {
+            List<string> layouts = new List<string>();
+            foreach(dynamic layout in doc.Layouts)
+            {
+                layouts.Add(layout.Name);
+            }
+            return layouts;
+        }
+
+        public void SendCommand(string command)
+        {
+            doc.SendCommand(command);
+        }
+
+        public void Close()
+        {
+            doc.Close();
+            acad.Quit();
+        }
+    }
+    
 }
