@@ -46,6 +46,11 @@
             this.prefixEntry = new System.Windows.Forms.TextBox();
             this.suffixEntry = new System.Windows.Forms.TextBox();
             this.lauchBtn = new System.Windows.Forms.Button();
+            this.scaleLineWeightChkBtn = new System.Windows.Forms.CheckBox();
+            this.preLispEntry = new System.Windows.Forms.TextBox();
+            this.preLispChkBox = new System.Windows.Forms.CheckBox();
+            this.postLispEntry = new System.Windows.Forms.TextBox();
+            this.postLispChkBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // addDrawingText
@@ -81,7 +86,7 @@
             this.manageButton.TabIndex = 2;
             this.manageButton.Text = "MANAGE";
             this.manageButton.UseVisualStyleBackColor = false;
-            this.manageButton.Click += new System.EventHandler(this.manageButton_Click_1);
+            this.manageButton.Click += new System.EventHandler(this.manageButton_Click);
             // 
             // layoutTypeText
             // 
@@ -139,6 +144,7 @@
             this.outputBrowseBtn.TabIndex = 6;
             this.outputBrowseBtn.Text = "BROWSE";
             this.outputBrowseBtn.UseVisualStyleBackColor = false;
+            this.outputBrowseBtn.Click += new System.EventHandler(this.outputBrowseBtn_Click);
             // 
             // ctbLabel
             // 
@@ -182,9 +188,9 @@
             this.lineWeightCheckBtn.ForeColor = System.Drawing.Color.GhostWhite;
             this.lineWeightCheckBtn.Location = new System.Drawing.Point(19, 241);
             this.lineWeightCheckBtn.Name = "lineWeightCheckBtn";
-            this.lineWeightCheckBtn.Size = new System.Drawing.Size(425, 28);
+            this.lineWeightCheckBtn.Size = new System.Drawing.Size(280, 28);
             this.lineWeightCheckBtn.TabIndex = 11;
-            this.lineWeightCheckBtn.Text = "DO YOU WANT TO PLOT WITH LINE WEIGHT ON?";
+            this.lineWeightCheckBtn.Text = "PLOT WITH LINEWEIGHTS ON?";
             this.lineWeightCheckBtn.UseVisualStyleBackColor = true;
             this.lineWeightCheckBtn.CheckedChanged += new System.EventHandler(this.lineWeightCheckBtn_CheckedChanged);
             // 
@@ -193,7 +199,7 @@
             this.prefixCheckBtn.AutoSize = true;
             this.prefixCheckBtn.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
             this.prefixCheckBtn.ForeColor = System.Drawing.Color.GhostWhite;
-            this.prefixCheckBtn.Location = new System.Drawing.Point(19, 286);
+            this.prefixCheckBtn.Location = new System.Drawing.Point(19, 329);
             this.prefixCheckBtn.Name = "prefixCheckBtn";
             this.prefixCheckBtn.Size = new System.Drawing.Size(96, 28);
             this.prefixCheckBtn.TabIndex = 12;
@@ -206,7 +212,7 @@
             this.suffixCheckBtn.AutoSize = true;
             this.suffixCheckBtn.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
             this.suffixCheckBtn.ForeColor = System.Drawing.Color.GhostWhite;
-            this.suffixCheckBtn.Location = new System.Drawing.Point(19, 331);
+            this.suffixCheckBtn.Location = new System.Drawing.Point(19, 374);
             this.suffixCheckBtn.Name = "suffixCheckBtn";
             this.suffixCheckBtn.Size = new System.Drawing.Size(95, 28);
             this.suffixCheckBtn.TabIndex = 13;
@@ -217,7 +223,7 @@
             // prefixEntry
             // 
             this.prefixEntry.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
-            this.prefixEntry.Location = new System.Drawing.Point(177, 288);
+            this.prefixEntry.Location = new System.Drawing.Point(177, 330);
             this.prefixEntry.Name = "prefixEntry";
             this.prefixEntry.Size = new System.Drawing.Size(249, 27);
             this.prefixEntry.TabIndex = 14;
@@ -225,7 +231,7 @@
             // suffixEntry
             // 
             this.suffixEntry.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
-            this.suffixEntry.Location = new System.Drawing.Point(177, 333);
+            this.suffixEntry.Location = new System.Drawing.Point(177, 375);
             this.suffixEntry.Name = "suffixEntry";
             this.suffixEntry.Size = new System.Drawing.Size(249, 27);
             this.suffixEntry.TabIndex = 15;
@@ -234,7 +240,7 @@
             // 
             this.lauchBtn.BackColor = System.Drawing.Color.SkyBlue;
             this.lauchBtn.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
-            this.lauchBtn.Location = new System.Drawing.Point(177, 379);
+            this.lauchBtn.Location = new System.Drawing.Point(177, 521);
             this.lauchBtn.Name = "lauchBtn";
             this.lauchBtn.Size = new System.Drawing.Size(132, 42);
             this.lauchBtn.TabIndex = 16;
@@ -242,12 +248,72 @@
             this.lauchBtn.UseVisualStyleBackColor = false;
             this.lauchBtn.Click += new System.EventHandler(this.lauchBtn_Click);
             // 
+            // scaleLineWeightChkBtn
+            // 
+            this.scaleLineWeightChkBtn.AutoSize = true;
+            this.scaleLineWeightChkBtn.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
+            this.scaleLineWeightChkBtn.ForeColor = System.Drawing.Color.GhostWhite;
+            this.scaleLineWeightChkBtn.Location = new System.Drawing.Point(19, 275);
+            this.scaleLineWeightChkBtn.Name = "scaleLineWeightChkBtn";
+            this.scaleLineWeightChkBtn.Size = new System.Drawing.Size(370, 28);
+            this.scaleLineWeightChkBtn.TabIndex = 17;
+            this.scaleLineWeightChkBtn.Text = "SCALE LINEWEIGHTS WITH PLOT SCALE?";
+            this.scaleLineWeightChkBtn.UseVisualStyleBackColor = true;
+            this.scaleLineWeightChkBtn.CheckedChanged += new System.EventHandler(this.scaleLineWeightChkBtn_CheckedChanged);
+            // 
+            // preLispEntry
+            // 
+            this.preLispEntry.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
+            this.preLispEntry.Location = new System.Drawing.Point(178, 421);
+            this.preLispEntry.Name = "preLispEntry";
+            this.preLispEntry.Size = new System.Drawing.Size(249, 27);
+            this.preLispEntry.TabIndex = 19;
+            // 
+            // preLispChkBox
+            // 
+            this.preLispChkBox.AutoSize = true;
+            this.preLispChkBox.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
+            this.preLispChkBox.ForeColor = System.Drawing.Color.GhostWhite;
+            this.preLispChkBox.Location = new System.Drawing.Point(20, 420);
+            this.preLispChkBox.Name = "preLispChkBox";
+            this.preLispChkBox.Size = new System.Drawing.Size(112, 28);
+            this.preLispChkBox.TabIndex = 18;
+            this.preLispChkBox.Text = "PRE-LISP:";
+            this.preLispChkBox.UseVisualStyleBackColor = true;
+            this.preLispChkBox.CheckedChanged += new System.EventHandler(this.preLispChkBox_CheckedChanged);
+            // 
+            // postLispEntry
+            // 
+            this.postLispEntry.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
+            this.postLispEntry.Location = new System.Drawing.Point(177, 468);
+            this.postLispEntry.Name = "postLispEntry";
+            this.postLispEntry.Size = new System.Drawing.Size(249, 27);
+            this.postLispEntry.TabIndex = 21;
+            // 
+            // postLispChkBox
+            // 
+            this.postLispChkBox.AutoSize = true;
+            this.postLispChkBox.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
+            this.postLispChkBox.ForeColor = System.Drawing.Color.GhostWhite;
+            this.postLispChkBox.Location = new System.Drawing.Point(19, 467);
+            this.postLispChkBox.Name = "postLispChkBox";
+            this.postLispChkBox.Size = new System.Drawing.Size(123, 28);
+            this.postLispChkBox.TabIndex = 20;
+            this.postLispChkBox.Text = "POST-LISP:";
+            this.postLispChkBox.UseVisualStyleBackColor = true;
+            this.postLispChkBox.CheckedChanged += new System.EventHandler(this.postLispChkBox_CheckedChanged);
+            // 
             // PlotDWG
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(466, 433);
+            this.ClientSize = new System.Drawing.Size(466, 579);
+            this.Controls.Add(this.postLispEntry);
+            this.Controls.Add(this.postLispChkBox);
+            this.Controls.Add(this.preLispEntry);
+            this.Controls.Add(this.preLispChkBox);
+            this.Controls.Add(this.scaleLineWeightChkBtn);
             this.Controls.Add(this.lauchBtn);
             this.Controls.Add(this.suffixEntry);
             this.Controls.Add(this.prefixEntry);
@@ -266,7 +332,6 @@
             this.Controls.Add(this.dwgBrowseBtn);
             this.Controls.Add(this.addDrawingText);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(484, 480);
             this.MinimumSize = new System.Drawing.Size(484, 480);
             this.Name = "PlotDWG";
             this.Text = "PLOT DWG";
@@ -294,5 +359,10 @@
         private System.Windows.Forms.TextBox prefixEntry;
         private System.Windows.Forms.TextBox suffixEntry;
         private System.Windows.Forms.Button lauchBtn;
+        private System.Windows.Forms.CheckBox scaleLineWeightChkBtn;
+        private System.Windows.Forms.TextBox preLispEntry;
+        private System.Windows.Forms.CheckBox preLispChkBox;
+        private System.Windows.Forms.TextBox postLispEntry;
+        private System.Windows.Forms.CheckBox postLispChkBox;
     }
 }

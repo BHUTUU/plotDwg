@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -22,6 +23,9 @@ namespace plotDWG
         string autocadCTBfilePath = string.Empty;
         string selectedCTBfile = string.Empty;
         bool lineWeightRequired = false;
+        bool scaleLineWeightRequired = false;
+        int MAXTRIES = 50;
+        bool runningPermission = true;
         Dictionary<string, Dictionary<String, String>> paper = new Dictionary<String, Dictionary<String, String>>
         {
             ["A0"] = new Dictionary<String, String>
@@ -108,7 +112,7 @@ namespace plotDWG
             }
         }
 
-        private void manageButton_Click_1(object sender, EventArgs e)
+        private void manageButton_Click(object sender, EventArgs e)
         {
             if (selectedDWGFiles.Count() == 0)
             {
@@ -121,7 +125,6 @@ namespace plotDWG
                 drawingsToPlot = manageForm.GetSelectedDrawings().ToList();
             }
         }
-
         private void outputBrowseBtn_Click(object sender, EventArgs e)
         {
             using (FolderBrowserDialog dialog = new FolderBrowserDialog())
@@ -134,6 +137,7 @@ namespace plotDWG
                     MessageBox.Show("You selected:\n" + outputFolderPath, "Folder Selected");
                 }
             }
+
         }
 
         private bool getAcadVersion()
@@ -302,6 +306,16 @@ namespace plotDWG
                 MessageBox.Show("Please enter a suffix for the output file names.", "Invalid Input");
                 return;
             }
+            if(preLispChkBox.Checked && string.IsNullOrEmpty(preLispEntry.Text))
+            {
+                MessageBox.Show("Please enter a pre-LISP command.", "Invalid Input");
+                return;
+            }
+            if(postLispChkBox.Checked && string.IsNullOrEmpty(postLispEntry.Text))
+            {
+                MessageBox.Show("Please enter a post-LISP command.", "Invalid Input");
+                return;
+            }
             try
             {
                 foreach(string fileToPlot in drawingsToPlot)
@@ -313,6 +327,123 @@ namespace plotDWG
             {
                 MessageBox.Show("An error occurred while preparing to plot: " + ex.Message, "Error");
                 return;
+            }
+        }
+        private bool PlotPdfForFile(string filePath)
+        {
+            string outputFileNamePrefix = string.Empty;
+            string outputFileNameSuffix = string.Empty;
+            if (prefixCheckBtn.Checked)
+            {
+                outputFileNamePrefix = prefixEntry.Text.ToString();
+            }
+            if(suffixCheckBtn.Checked)
+            {
+                outputFileNameSuffix = suffixEntry.Text.ToString();
+            }
+
+            try
+            {
+                AutoCAD autocadInstance = new AutoCAD(filePath);
+                Thread.Sleep(5000);
+                int tryLevel11 = 0;
+                while(tryLevel11 <= MAXTRIES)
+                {
+                    if(!runningPermission)
+                    {
+                        int tryLevel12 = 0;
+                        while(tryLevel12<=MAXTRIES)
+                        {
+                            try
+                            {
+                                autocadInstance.Close();
+                                break;
+                            } catch
+                            {
+                                Thread.Sleep(1000);
+                                tryLevel12++;
+                                continue;
+                            }
+                        }
+                    }
+
+                    try
+                    {
+                        List<string> layoutNames = autocadInstance.GetLayoutNames();
+                        foreach (string layoutToPlot in layoutNames)
+                        {
+                            if (!runningPermission)
+                            {
+                                int tryLevel12 = 0;
+                                while (tryLevel12 <= MAXTRIES)
+                                {
+                                    try
+                                    {
+                                        autocadInstance.Close();
+                                        break;
+                                    }
+                                    catch
+                                    {
+                                        Thread.Sleep(1000);
+                                        tryLevel12++;
+                                        continue;
+                                    }
+                                }
+                                break;
+                            }
+
+                            string plotCommand = GeneratePlotCommand(layoutToPlot, paperSize, paperOrientation, selectedCTBfile, lineWeightRequired ? "Y" : "N", scaleLineWeightRequired ? "Y" : "N", outputFolderPath, $"{outputFileNamePrefix}{layoutToPlot}{outputFileNameSuffix}.pdf");
+                            //pre-lisp
+                            //plot
+                            //post-lisp
+                        }
+                    } catch
+                    {
+                        //to be updated
+                    }
+                }
+
+            }
+            return true;
+        }
+        private string GeneratePlotCommand(string LayoutName, string PaperType, string Orientation, string PlotCTB, string LineWeight, string ScaleLineWeight, string OutputFolder, string OutputFileName)
+        {
+            string ouputFinalPDFfilePath = Path.Combine(OutputFolder, OutputFileName);
+            return $"(command \"-PLOT\" \"Y\" \"{{LayoutName}}\" \"DWG To PDF.pc3\" \"{paper[PaperType][Orientation]}\" \"M\" \"L\" \"N\" \"L\" \"1=1\" \"0.00,0.00\" \"Y\" \"{PlotCTB}\" \"{LineWeight}\" \"{ScaleLineWeight}\" \"N\" \"N\" \"{ouputFinalPDFfilePath}\" \"N\" \"Y\") ";
+        }
+
+        private void scaleLineWeightChkBtn_CheckedChanged(object sender, EventArgs e)
+        {
+            if(scaleLineWeightChkBtn.Checked)
+            {
+                scaleLineWeightRequired = true;
+            }
+            else
+            {
+                scaleLineWeightRequired = false;
+            }
+            MessageBox.Show(scaleLineWeightRequired.ToString(), "Scale Lineweight!");
+        }
+
+        private void preLispChkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if(preLispChkBox.Checked)
+            {
+                preLispEntry.Enabled = true;
+            } else
+            {
+                preLispEntry.Enabled = false;
+            }
+        }
+
+        private void postLispChkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if(postLispChkBox.Checked)
+            {
+                postLispEntry.Enabled = true;
+            } else
+            {
+                postLispEntry.Enabled = false;
             }
         }
     }
