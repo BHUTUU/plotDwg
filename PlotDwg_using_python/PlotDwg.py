@@ -238,7 +238,8 @@ class PlotDWG:
         self.already_running = False
 
     def generatePlotCommand(self, LayoutName,paperType, orientation, outputFolder, outputFileName):
-        return f'''(command "-PLOT" "Y" "{LayoutName}" "DWG To PDF.pc3" "{paper[paperType][orientation]}" "M" "L" "N" "L" "1=1" "0.00,0.00" "Y" "GCS-ATK_Colour.ctb" "N" "N" "N" "N" "{os.path.join(outputFolder, outputFileName).replace('\\','\\\\').replace('/','\\\\')}" "N" "Y") '''
+        outputFinalPath = os.path.join(outputFolder, outputFileName).replace('\\','\\\\').replace('/','\\\\')
+        return f'''(command "-PLOT" "Y" "{LayoutName}" "DWG To PDF.pc3" "{paper[paperType][orientation]}" "M" "L" "N" "L" "1=1" "0.00,0.00" "Y" "acad.ctb" "N" "N" "N" "N" "{outputFinalPath}" "N" "Y") '''
     def process_queue(self):
         try:
             while True:

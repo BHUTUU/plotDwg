@@ -51,6 +51,7 @@
             this.preLispChkBox = new System.Windows.Forms.CheckBox();
             this.postLispEntry = new System.Windows.Forms.TextBox();
             this.postLispChkBox = new System.Windows.Forms.CheckBox();
+            this.progressLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // addDrawingText
@@ -74,7 +75,7 @@
             this.dwgBrowseBtn.TabIndex = 1;
             this.dwgBrowseBtn.Text = "BROWSE";
             this.dwgBrowseBtn.UseVisualStyleBackColor = false;
-            this.dwgBrowseBtn.Click += new System.EventHandler(this.dwgBrowseBtn_Click);
+            this.dwgBrowseBtn.Click += new System.EventHandler(this.DwgBrowseBtn_Click);
             // 
             // manageButton
             // 
@@ -86,7 +87,7 @@
             this.manageButton.TabIndex = 2;
             this.manageButton.Text = "MANAGE";
             this.manageButton.UseVisualStyleBackColor = false;
-            this.manageButton.Click += new System.EventHandler(this.manageButton_Click);
+            this.manageButton.Click += new System.EventHandler(this.ManageButton_Click);
             // 
             // layoutTypeText
             // 
@@ -109,7 +110,7 @@
             this.layoutSizeDropDownBtn.Size = new System.Drawing.Size(105, 27);
             this.layoutSizeDropDownBtn.TabIndex = 4;
             this.layoutSizeDropDownBtn.Text = "SIZE";
-            this.layoutSizeDropDownBtn.SelectedIndexChanged += new System.EventHandler(this.layoutSizeDropDownBtn_SelectedIndexChanged);
+            this.layoutSizeDropDownBtn.SelectedIndexChanged += new System.EventHandler(this.LayoutSizeDropDownBtn_SelectedIndexChanged);
             // 
             // layoutOrientationDropDownBtn
             // 
@@ -121,7 +122,7 @@
             this.layoutOrientationDropDownBtn.Size = new System.Drawing.Size(154, 27);
             this.layoutOrientationDropDownBtn.TabIndex = 5;
             this.layoutOrientationDropDownBtn.Text = "ORIENTATION";
-            this.layoutOrientationDropDownBtn.SelectedIndexChanged += new System.EventHandler(this.layoutOrientationDropDownBtn_SelectedIndexChanged);
+            this.layoutOrientationDropDownBtn.SelectedIndexChanged += new System.EventHandler(this.LayoutOrientationDropDownBtn_SelectedIndexChanged);
             // 
             // outputFolderText
             // 
@@ -144,7 +145,7 @@
             this.outputBrowseBtn.TabIndex = 6;
             this.outputBrowseBtn.Text = "BROWSE";
             this.outputBrowseBtn.UseVisualStyleBackColor = false;
-            this.outputBrowseBtn.Click += new System.EventHandler(this.outputBrowseBtn_Click);
+            this.outputBrowseBtn.Click += new System.EventHandler(this.OutputBrowseBtn_Click);
             // 
             // ctbLabel
             // 
@@ -167,7 +168,7 @@
             this.ctbDropBtn.Size = new System.Drawing.Size(238, 27);
             this.ctbDropBtn.TabIndex = 9;
             this.ctbDropBtn.Text = "SELECT";
-            this.ctbDropBtn.SelectedIndexChanged += new System.EventHandler(this.ctbDropBtn_SelectedIndexChanged);
+            this.ctbDropBtn.SelectedIndexChanged += new System.EventHandler(this.CtbDropBtn_SelectedIndexChanged);
             // 
             // browseCTBbtn
             // 
@@ -179,7 +180,7 @@
             this.browseCTBbtn.TabIndex = 10;
             this.browseCTBbtn.Text = "BROWSE";
             this.browseCTBbtn.UseVisualStyleBackColor = false;
-            this.browseCTBbtn.Click += new System.EventHandler(this.browseCTBbtn_Click);
+            this.browseCTBbtn.Click += new System.EventHandler(this.BrowseCTBbtn_Click);
             // 
             // lineWeightCheckBtn
             // 
@@ -192,7 +193,7 @@
             this.lineWeightCheckBtn.TabIndex = 11;
             this.lineWeightCheckBtn.Text = "PLOT WITH LINEWEIGHTS ON?";
             this.lineWeightCheckBtn.UseVisualStyleBackColor = true;
-            this.lineWeightCheckBtn.CheckedChanged += new System.EventHandler(this.lineWeightCheckBtn_CheckedChanged);
+            this.lineWeightCheckBtn.CheckedChanged += new System.EventHandler(this.LineWeightCheckBtn_CheckedChanged);
             // 
             // prefixCheckBtn
             // 
@@ -205,7 +206,7 @@
             this.prefixCheckBtn.TabIndex = 12;
             this.prefixCheckBtn.Text = "PREFIX:";
             this.prefixCheckBtn.UseVisualStyleBackColor = true;
-            this.prefixCheckBtn.CheckedChanged += new System.EventHandler(this.prefixCheckBtn_CheckedChanged);
+            this.prefixCheckBtn.CheckedChanged += new System.EventHandler(this.PrefixCheckBtn_CheckedChanged);
             // 
             // suffixCheckBtn
             // 
@@ -218,7 +219,7 @@
             this.suffixCheckBtn.TabIndex = 13;
             this.suffixCheckBtn.Text = "SUFFIX:";
             this.suffixCheckBtn.UseVisualStyleBackColor = true;
-            this.suffixCheckBtn.CheckedChanged += new System.EventHandler(this.suffixCheckBtn_CheckedChanged);
+            this.suffixCheckBtn.CheckedChanged += new System.EventHandler(this.SuffixCheckBtn_CheckedChanged);
             // 
             // prefixEntry
             // 
@@ -246,7 +247,7 @@
             this.lauchBtn.TabIndex = 16;
             this.lauchBtn.Text = "LAUNCH";
             this.lauchBtn.UseVisualStyleBackColor = false;
-            this.lauchBtn.Click += new System.EventHandler(this.lauchBtn_Click);
+            this.lauchBtn.Click += new System.EventHandler(this.LauchBtn_Click);
             // 
             // scaleLineWeightChkBtn
             // 
@@ -259,7 +260,7 @@
             this.scaleLineWeightChkBtn.TabIndex = 17;
             this.scaleLineWeightChkBtn.Text = "SCALE LINEWEIGHTS WITH PLOT SCALE?";
             this.scaleLineWeightChkBtn.UseVisualStyleBackColor = true;
-            this.scaleLineWeightChkBtn.CheckedChanged += new System.EventHandler(this.scaleLineWeightChkBtn_CheckedChanged);
+            this.scaleLineWeightChkBtn.CheckedChanged += new System.EventHandler(this.ScaleLineWeightChkBtn_CheckedChanged);
             // 
             // preLispEntry
             // 
@@ -280,7 +281,7 @@
             this.preLispChkBox.TabIndex = 18;
             this.preLispChkBox.Text = "PRE-LISP:";
             this.preLispChkBox.UseVisualStyleBackColor = true;
-            this.preLispChkBox.CheckedChanged += new System.EventHandler(this.preLispChkBox_CheckedChanged);
+            this.preLispChkBox.CheckedChanged += new System.EventHandler(this.PreLispChkBox_CheckedChanged);
             // 
             // postLispEntry
             // 
@@ -301,7 +302,18 @@
             this.postLispChkBox.TabIndex = 20;
             this.postLispChkBox.Text = "POST-LISP:";
             this.postLispChkBox.UseVisualStyleBackColor = true;
-            this.postLispChkBox.CheckedChanged += new System.EventHandler(this.postLispChkBox_CheckedChanged);
+            this.postLispChkBox.CheckedChanged += new System.EventHandler(this.PostLispChkBox_CheckedChanged);
+            // 
+            // progressLabel
+            // 
+            this.progressLabel.AutoSize = true;
+            this.progressLabel.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
+            this.progressLabel.ForeColor = System.Drawing.Color.GhostWhite;
+            this.progressLabel.Location = new System.Drawing.Point(353, 529);
+            this.progressLabel.Name = "progressLabel";
+            this.progressLabel.Size = new System.Drawing.Size(59, 24);
+            this.progressLabel.TabIndex = 22;
+            this.progressLabel.Text = "Ready";
             // 
             // PlotDWG
             // 
@@ -309,6 +321,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(466, 579);
+            this.Controls.Add(this.progressLabel);
             this.Controls.Add(this.postLispEntry);
             this.Controls.Add(this.postLispChkBox);
             this.Controls.Add(this.preLispEntry);
@@ -364,5 +377,6 @@
         private System.Windows.Forms.CheckBox preLispChkBox;
         private System.Windows.Forms.TextBox postLispEntry;
         private System.Windows.Forms.CheckBox postLispChkBox;
+        private System.Windows.Forms.Label progressLabel;
     }
 }
