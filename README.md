@@ -1,7 +1,5 @@
 # plotDWG
 
-> ⚠️ **Development Status**: This project is currently in active development and not yet ready for production use. Features may be incomplete or subject to significant changes.
-
 A Windows Forms application that simplifies the process of plotting AutoCAD DWG files to PDF format. This tool allows users to batch process multiple DWG files, selecting specific paper sizes and orientations for the output PDFs.
 
 ## Features
@@ -24,7 +22,7 @@ A Windows Forms application that simplifies the process of plotting AutoCAD DWG 
 - AutoCAD (must be installed and running)
 - Visual Studio (for development)
 
-## Installation
+## Installation For Devs:
 
 1. Clone this repository:
 ```bash
@@ -35,6 +33,9 @@ git clone https://github.com/yourusername/plotDWG.git
 3. Build the solution
 4. Run the application
 
+## Installation for USERS
+1. Download the latest setup file from release section and just install it by follwing the instruction after you run that.
+   
 ## Usage
 
 1. Launch AutoCAD application first
@@ -44,7 +45,10 @@ git clone https://github.com/yourusername/plotDWG.git
 5. Select desired paper size from the dropdown (A0-A4)
 6. Choose orientation (Portrait/Landscape)
 7. Select output folder for the PDF files
-8. Click Plot to begin the process
+8. Check whether you want to plot with lineweights or not
+9. Check whether you want to scale the lineweights as per scale or not
+10. You may add any lisp expression to be run before or after the plot command, for example: (COMMAND "-XREF" "R" "*") to reload all the xrefs before plot.
+11. Click Plot to begin the process
 
 ## Development
 
