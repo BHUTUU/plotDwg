@@ -446,7 +446,8 @@ namespace plotDWG
                             {
                                 autocadInstance.Close();
                                 break;
-                            } catch
+                            }
+                            catch
                             {
                                 Thread.Sleep(1000);
                                 tryLevel14++;
@@ -471,7 +472,8 @@ namespace plotDWG
         private string GeneratePlotCommand(string LayoutName, string PaperType, string Orientation, string PlotCTB, string LineWeight, string ScaleLineWeight, string OutputFolder, string OutputFileName)
         {
             string ouputFinalPDFfilePath = Path.Combine(OutputFolder, OutputFileName);
-            return $"(command \"-PLOT\" \"Y\" \"{LayoutName}\" \"DWG To PDF.pc3\" \"{paper[PaperType][Orientation]}\" \"M\" \"L\" \"N\" \"L\" \"1=1\" \"0.00,0.00\" \"Y\" \"{PlotCTB}\" \"{LineWeight}\" \"{ScaleLineWeight}\" \"N\" \"N\" \"{ouputFinalPDFfilePath.Replace("\\", "\\\\")}\" \"N\" \"Y\") ";
+            string finalOrientation = Orientation.ToUpper() == "PORTRAIT" ? "P" : "L";
+            return $"(command \"-PLOT\" \"Y\" \"{LayoutName}\" \"DWG To PDF.pc3\" \"{paper[PaperType][Orientation]}\" \"M\" \"{finalOrientation}\" \"N\" \"L\" \"1=1\" \"0.00,0.00\" \"Y\" \"{PlotCTB}\" \"{LineWeight}\" \"{ScaleLineWeight}\" \"N\" \"N\" \"{ouputFinalPDFfilePath.Replace("\\", "\\\\")}\" \"N\" \"Y\") ";
         }
 
         private void ScaleLineWeightChkBtn_CheckedChanged(object sender, EventArgs e)
