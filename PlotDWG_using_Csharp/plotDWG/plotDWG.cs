@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,7 +12,9 @@ namespace plotDWG
 {
     public partial class PlotDWG : Form
     {
+        const int MAXTRIES = 50;
         List<string> selectedDWGFiles = new List<string>();
+        List<string> drawingFaildToPlot = new List<string>();
         string paperSize = string.Empty;
         string paperOrientation = string.Empty;
         string outputFolderPath = string.Empty;
@@ -24,10 +23,9 @@ namespace plotDWG
         string selectedCTBfile = string.Empty;
         bool lineWeightRequired = false;
         bool scaleLineWeightRequired = false;
-        int MAXTRIES = 50;
         bool runningPermission = true;
         bool alreadyRunning = false;
-        List<string> drawingFaildToPlot = new List<string>();
+
         Dictionary<string, Dictionary<String, String>> paper = new Dictionary<String, Dictionary<String, String>>
         {
             ["A0"] = new Dictionary<String, String>
@@ -56,6 +54,7 @@ namespace plotDWG
                 ["LANDSCAPE"] = "ISO full bleed A4 (297.00 x 210.00 MM)"
             }
         };
+
         private List<string> drawingsToPlot = new List<string>();
 
         public PlotDWG()
@@ -67,16 +66,17 @@ namespace plotDWG
             postLispEntry.Enabled = false;
             layoutOrientationDropDownBtn.Items.AddRange(new string[] { "LANDSCAPE", "PORTRAIT" });
             layoutSizeDropDownBtn.Items.AddRange(new string[] { "A0", "A1", "A2", "A3", "A4" });
-            if(GetAcadVersion() == true)
+            if (GetAcadVersion() == true)
             {
                 LoadCTBOptions();
 
-            } else
+            }
+            else
             {
                 Environment.Exit(0);
             }
-
         }
+
         private void LoadCTBOptions()
         {
             if (Directory.Exists(autocadCTBfilePath))
@@ -95,26 +95,25 @@ namespace plotDWG
 
         private void DwgBrowseBtn_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            using OpenFileDialog openFileDialog = new();
+            openFileDialog.Filter = "DWG files (*.dwg)|*.dwg";
+            openFileDialog.Multiselect = true;
+            openFileDialog.Title = "Select DWG files to be plotted";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                openFileDialog.Filter = "DWG files (*.dwg)|*.dwg";
-                openFileDialog.Multiselect = true;
-                openFileDialog.Title = "Select DWG files to be plotted";
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                foreach (string sf in openFileDialog.FileNames)
                 {
-                    foreach(string sf in openFileDialog.FileNames)
+                    if (!selectedDWGFiles.Contains(sf))
                     {
-                        if (!selectedDWGFiles.Contains(sf))
-                        {
-                            selectedDWGFiles.Add(sf);
-                        }
-                        if (!drawingsToPlot.Contains(sf))
-                        {
-                            drawingsToPlot.Add(sf);
-                        }
+                        selectedDWGFiles.Add(sf);
                     }
-                    MessageBox.Show(string.Join("\n", selectedDWGFiles), "Selected Drawings:");
+                    if (!drawingsToPlot.Contains(sf))
+                    {
+                        drawingsToPlot.Add(sf);
+                    }
                 }
+                MessageBox.Show(string.Join("\n", selectedDWGFiles), "Selected Drawings:");
             }
         }
 
@@ -125,23 +124,25 @@ namespace plotDWG
                 MessageBox.Show("No drawings selected. Please browse first.", "Invalid Input");
                 return;
             }
+
             using var manageForm = new ManageDrawingForm(selectedDWGFiles.ToArray(), drawingsToPlot.ToArray());
+
             if (manageForm.ShowDialog() == DialogResult.Yes)
             {
                 drawingsToPlot = manageForm.GetSelectedDrawings().ToList();
             }
         }
+
         private void OutputBrowseBtn_Click(object sender, EventArgs e)
         {
-            using (FolderBrowserDialog dialog = new FolderBrowserDialog())
+            using FolderBrowserDialog dialog = new();
+            dialog.Description = "Select output folder for plotted PDFs";
+            dialog.ShowNewFolderButton = true;
+
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
-                dialog.Description = "Select output folder for plotted PDFs";
-                dialog.ShowNewFolderButton = true;
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    outputFolderPath = dialog.SelectedPath;
-                    MessageBox.Show("You selected:\n" + outputFolderPath, "Folder Selected");
-                }
+                outputFolderPath = dialog.SelectedPath;
+                MessageBox.Show("You selected:\n" + outputFolderPath, "Folder Selected");
             }
 
         }
@@ -152,13 +153,13 @@ namespace plotDWG
             {
                 dynamic acad = Marshal.GetActiveObject("AutoCAD.Application");
                 acad.Visible = true;
-                //MessageBox.Show($"AutoCAD Version: {acadVersion}\nCTB File Path: {autocadCTBfilePath}", "AutoCAD Version Info");
             }
             catch
             {
                 MessageBox.Show("Please open AutoCAD before proceeding!", "Invalid Start");
                 return false;
             }
+
             try
             {
                 dynamic acad = Marshal.GetActiveObject("AutoCAD.Application");
@@ -176,15 +177,17 @@ namespace plotDWG
                 MessageBox.Show("There some internal Error: error in forming plot style path!", "INTERNAL ERROR!");
                 return false;
             }
+
             return true;
         }
 
         private void LineWeightCheckBtn_CheckedChanged(object sender, EventArgs e)
         {
-            if(lineWeightCheckBtn.Checked)
+            if (lineWeightCheckBtn.Checked)
             {
                 lineWeightRequired = true;
-            } else
+            }
+            else
             {
                 lineWeightRequired = false;
             }
@@ -197,45 +200,47 @@ namespace plotDWG
 
         private void BrowseCTBbtn_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog ofd = new OpenFileDialog())
+            using OpenFileDialog ofd = new();
+            ofd.Filter = "CTB files (*.ctb)|*.ctb";
+            ofd.Multiselect = false;
+            ofd.Title = "Select CTB file";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
             {
-                ofd.Filter = "CTB files (*.ctb)|*.ctb";
-                ofd.Multiselect = false;
-                ofd.Title = "Select CTB file";
+                string ctbFileBrowsed = ofd.FileName;
+                string destPath = Path.Combine(autocadCTBfilePath, Path.GetFileName(ctbFileBrowsed));
 
-                if (ofd.ShowDialog() == DialogResult.OK)
+                try
                 {
-                    string ctbFileBrowsed = ofd.FileName;
-                    string destPath = Path.Combine(autocadCTBfilePath, Path.GetFileName(ctbFileBrowsed));
-
-                    try
+                    if (File.Exists(destPath))
                     {
-                        if (File.Exists(destPath))
+                        DialogResult replaceDuplicate = MessageBox.Show("This CTB already exists in AutoCAD plot style inventory, Do you want to replace it?", "Already Exists | Replace?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (replaceDuplicate == DialogResult.Yes)
                         {
-                            DialogResult replaceDuplicate = MessageBox.Show("This CTB already exists in AutoCAD plot style inventory, Do you want to replace it?", "Already Exists | Replace?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                            if(replaceDuplicate == DialogResult.Yes)
-                            {
-                                File.Delete(destPath);
-                                File.Copy(ctbFileBrowsed, destPath);
-                                MessageBox.Show("CTB file added to AutoCAD inventory!", "Success");
-                            } else
-                            {
-                                MessageBox.Show("Selecting the existing CTB from the AutoCAD inventory!", "Information");
-
-                            }
-                        } else
-                        {
+                            File.Delete(destPath);
                             File.Copy(ctbFileBrowsed, destPath);
                             MessageBox.Show("CTB file added to AutoCAD inventory!", "Success");
                         }
-                            LoadCTBOptions();
-                        if (ctbDropBtn.Items.Contains(Path.GetFileName(ctbFileBrowsed)))
-                            ctbDropBtn.SelectedItem = Path.GetFileName(ctbFileBrowsed);
+                        else
+                        {
+                            MessageBox.Show("Selecting the existing CTB from the AutoCAD inventory!", "Information");
+
+                        }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        MessageBox.Show("Error copying CTB file: " + ex.Message, "Copy Failed");
+                        File.Copy(ctbFileBrowsed, destPath);
+                        MessageBox.Show("CTB file added to AutoCAD inventory!", "Success");
                     }
+
+                    LoadCTBOptions();
+
+                    if (ctbDropBtn.Items.Contains(Path.GetFileName(ctbFileBrowsed)))
+                        ctbDropBtn.SelectedItem = Path.GetFileName(ctbFileBrowsed);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error copying CTB file: " + ex.Message, "Copy Failed");
                 }
             }
         }
@@ -252,7 +257,7 @@ namespace plotDWG
 
         private void PrefixCheckBtn_CheckedChanged(object sender, EventArgs e)
         {
-            if(prefixCheckBtn.Checked)
+            if (prefixCheckBtn.Checked)
             {
                 prefixEntry.Enabled = true;
             }
@@ -264,7 +269,7 @@ namespace plotDWG
 
         private void SuffixCheckBtn_CheckedChanged(object sender, EventArgs e)
         {
-            if(suffixCheckBtn.Checked)
+            if (suffixCheckBtn.Checked)
             {
                 suffixEntry.Enabled = true;
             }
@@ -287,41 +292,49 @@ namespace plotDWG
                 MessageBox.Show("No drawings selected. Please select drawings to plot.", "Invalid Input");
                 return;
             }
+
             if (string.IsNullOrEmpty(paperSize) || string.IsNullOrEmpty(paperOrientation))
             {
                 MessageBox.Show("Please select paper size and orientation.", "Invalid Input");
                 return;
             }
+
             if (string.IsNullOrEmpty(outputFolderPath))
             {
                 MessageBox.Show("Please select an output folder.", "Invalid Input");
                 return;
             }
+
             if (string.IsNullOrEmpty(autocadSoftwareYear) || string.IsNullOrEmpty(autocadCTBfilePath))
             {
                 MessageBox.Show("AutoCAD software year or CTB file path unable to determine. Please inform to Suman Kumar ~BHUTUU", "Internal Error");
                 return;
             }
+
             if (string.IsNullOrEmpty(selectedCTBfile))
             {
                 MessageBox.Show("Please select a CTB file.", "Invalid Input");
                 return;
             }
+
             if (prefixCheckBtn.Checked && string.IsNullOrEmpty(prefixEntry.Text))
             {
                 MessageBox.Show("Please enter a prefix for the output file names.", "Invalid Input");
                 return;
             }
+
             if (suffixCheckBtn.Checked && string.IsNullOrEmpty(suffixEntry.Text))
             {
                 MessageBox.Show("Please enter a suffix for the output file names.", "Invalid Input");
                 return;
             }
+
             if (preLispChkBox.Checked && string.IsNullOrEmpty(preLispEntry.Text))
             {
                 MessageBox.Show("Please enter a pre-LISP command.", "Invalid Input");
                 return;
             }
+
             if (postLispChkBox.Checked && string.IsNullOrEmpty(postLispEntry.Text))
             {
                 MessageBox.Show("Please enter a post-LISP command.", "Invalid Input");
@@ -349,6 +362,11 @@ namespace plotDWG
                     }
                 });
 
+                if (drawingFaildToPlot.Count > 0)
+                {
+                    MessageBox.Show("Some drawings failed to plot:\n" + string.Join("\n", drawingFaildToPlot), "Plotting Failed");
+                }
+
                 MessageBox.Show("Plotting completed successfully!", "Done");
             }
             catch (Exception ex)
@@ -366,11 +384,13 @@ namespace plotDWG
         {
             string outputFileNamePrefix = string.Empty;
             string outputFileNameSuffix = string.Empty;
+
             if (prefixCheckBtn.Checked)
             {
                 outputFileNamePrefix = prefixEntry.Text.ToString();
             }
-            if(suffixCheckBtn.Checked)
+
+            if (suffixCheckBtn.Checked)
             {
                 outputFileNameSuffix = suffixEntry.Text.ToString();
             }
@@ -380,18 +400,21 @@ namespace plotDWG
                 AutoCAD autocadInstance = new AutoCAD(filePath);
                 Thread.Sleep(2000);
                 int tryLevel11 = 0;
-                while(tryLevel11 <= MAXTRIES)
+
+                while (tryLevel11 <= MAXTRIES)
                 {
-                    if(!runningPermission)
+                    if (!runningPermission)
                     {
                         int tryLevel12 = 0;
-                        while(tryLevel12<=MAXTRIES)
+
+                        while (tryLevel12 <= MAXTRIES)
                         {
                             try
                             {
                                 autocadInstance.Close();
                                 break;
-                            } catch
+                            }
+                            catch
                             {
                                 Thread.Sleep(1000);
                                 tryLevel12++;
@@ -403,11 +426,13 @@ namespace plotDWG
                     try
                     {
                         List<string> layoutNames = autocadInstance.GetLayoutNames().ToList();
+
                         foreach (string layoutToPlot in layoutNames)
                         {
                             if (!runningPermission)
                             {
                                 int tryLevel13 = 0;
+
                                 while (tryLevel13 <= MAXTRIES)
                                 {
                                     try
@@ -426,20 +451,25 @@ namespace plotDWG
                             }
 
                             string plotCommand = GeneratePlotCommand(layoutToPlot, paperSize, paperOrientation, selectedCTBfile, lineWeightRequired ? "Y" : "N", scaleLineWeightRequired ? "Y" : "N", outputFolderPath, $"{outputFileNamePrefix}{layoutToPlot}{outputFileNameSuffix}.pdf");
-                            if(preLispChkBox.Checked && string.IsNullOrEmpty(preLispEntry.Text.ToString()))
+
+                            if (preLispChkBox.Checked && string.IsNullOrEmpty(preLispEntry.Text.ToString()))
                             {
                                 autocadInstance.SendCommand(preLispEntry.Text.ToString());
                                 Thread.Sleep(1000);
                             }
+
                             autocadInstance.SendCommand(plotCommand);
                             Thread.Sleep(1000);
-                            if(postLispChkBox.Checked && string.IsNullOrEmpty(postLispEntry.Text.ToString()))
+
+                            if (postLispChkBox.Checked && string.IsNullOrEmpty(postLispEntry.Text.ToString()))
                             {
                                 autocadInstance.SendCommand(postLispEntry.Text.ToString());
                                 Thread.Sleep(1000);
                             }
                         }
+
                         int tryLevel14 = 0;
+
                         while (tryLevel14 <= MAXTRIES)
                         {
                             try
@@ -454,8 +484,10 @@ namespace plotDWG
                                 continue;
                             }
                         }
+
                         return;
-                    } catch
+                    }
+                    catch
                     {
                         Thread.Sleep(1000);
                         tryLevel11++;
@@ -463,12 +495,14 @@ namespace plotDWG
                     }
                 }
 
-            } catch
+            }
+            catch
             {
                 drawingFaildToPlot.Add(filePath);
                 return;
             }
         }
+
         private string GeneratePlotCommand(string LayoutName, string PaperType, string Orientation, string PlotCTB, string LineWeight, string ScaleLineWeight, string OutputFolder, string OutputFileName)
         {
             string ouputFinalPDFfilePath = Path.Combine(OutputFolder, OutputFileName);
@@ -478,7 +512,7 @@ namespace plotDWG
 
         private void ScaleLineWeightChkBtn_CheckedChanged(object sender, EventArgs e)
         {
-            if(scaleLineWeightChkBtn.Checked)
+            if (scaleLineWeightChkBtn.Checked)
             {
                 scaleLineWeightRequired = true;
             }
@@ -490,10 +524,11 @@ namespace plotDWG
 
         private void PreLispChkBox_CheckedChanged(object sender, EventArgs e)
         {
-            if(preLispChkBox.Checked)
+            if (preLispChkBox.Checked)
             {
                 preLispEntry.Enabled = true;
-            } else
+            }
+            else
             {
                 preLispEntry.Enabled = false;
             }
@@ -501,10 +536,11 @@ namespace plotDWG
 
         private void PostLispChkBox_CheckedChanged(object sender, EventArgs e)
         {
-            if(postLispChkBox.Checked)
+            if (postLispChkBox.Checked)
             {
                 postLispEntry.Enabled = true;
-            } else
+            }
+            else
             {
                 postLispEntry.Enabled = false;
             }
@@ -521,27 +557,32 @@ namespace plotDWG
         {
             acadFilePath = filePath;
             acad = Marshal.GetActiveObject("AutoCAD.Application");
+
             if (acad == null)
             {
                 throw new Exception("AutoCAD is not running.");
             }
+
             acad.Visible = true;
             doc = acad.Documents.Open(filePath);
         }
-        
+
         public List<string> GetLayoutNames()
         {
             List<string> layouts = new List<string>();
-            foreach(dynamic layout in doc.Layouts)
+
+            foreach (dynamic layout in doc.Layouts)
             {
-                if(layout.Name.ToString() != "Model")
+                if (layout.Name.ToString() != "Model")
                 {
                     layouts.Add(layout.Name);
-                } else
+                }
+                else
                 {
                     continue;
                 }
             }
+
             return layouts;
         }
 
@@ -555,5 +596,4 @@ namespace plotDWG
             doc.Close();
         }
     }
-    
 }
