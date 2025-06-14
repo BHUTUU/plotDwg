@@ -34,7 +34,7 @@ git clone https://github.com/yourusername/plotDWG.git
 4. Run the application
 
 ## Installation for USERS
-1. Download the latest setup file from (release)[https://github.com/BHUTUU/plotDwg/releases] section and just install it by following the instruction after you run that.
+1. Download the latest setup file from [releases](https://github.com/BHUTUU/plotDwg/releases) section and just install it by following the instruction after you run that.
    
 ## Usage
 
