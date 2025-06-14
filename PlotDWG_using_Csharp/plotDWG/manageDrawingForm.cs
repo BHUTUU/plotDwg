@@ -20,6 +20,7 @@ namespace plotDWG
             this.Width = 600;
             this.Height = 600;
             var font = new Font("Arial", 10.2F, FontStyle.Bold);
+            var chkBTNFont = new Font("Arial", 10.2F, FontStyle.Regular);
             var bgColor = Color.SkyBlue;
             var fgColor = Color.Black;
 
@@ -36,7 +37,10 @@ namespace plotDWG
                     Text = path,
                     Checked = initiallyCheckedSet.Contains(path),
                     AutoSize = true,
+                    Font = chkBTNFont,
+                    ForeColor=Color.WhiteSmoke
                 };
+
                 panel.Controls.Add(chk);
                 checkBoxes.Add(chk);
             }
