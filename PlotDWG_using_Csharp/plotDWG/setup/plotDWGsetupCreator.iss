@@ -4,10 +4,10 @@
 [Setup]
 ; Basic Setup Information
 AppName=plotDWG
-AppVersion=1.0.0
+AppVersion=1.0.1
 DefaultDirName={localappdata}\plotDWG
 DefaultGroupName=plotDWG
-OutputBaseFilename=plotDWG_v1.0.0_x64_Setup
+OutputBaseFilename=plotDWG_v1.0.1_x64_Setup
 OutputDir=.
 PrivilegesRequired=lowest
 Compression=lzma2
