@@ -164,13 +164,21 @@ namespace plotDWG
             {
                 dynamic acad = Marshal.GetActiveObject("AutoCAD.Application");
                 acad.Visible = true;
+                bool ifAcadIsCivil3D = acad.Name.ToString().Contains("Civil 3D", StringComparison.OrdinalIgnoreCase);
                 string acadPath = acad.Path.ToString();
                 string acadYear = acadPath.Substring(acadPath.Length - 4, 4);
                 autocadSoftwareYear = acadYear;
                 string acadVersion = acad.Version.ToString();
                 string numberVersion = acadVersion.Substring(0, 4);
                 string userName = Environment.GetEnvironmentVariable("USERNAME");
-                autocadCTBfilePath = $"C:\\Users\\{userName}\\AppData\\Roaming\\Autodesk\\AutoCAD {acadYear}\\R{numberVersion}\\enu\\Plotters\\Plot Styles";
+                if(ifAcadIsCivil3D)
+                {
+                    autocadCTBfilePath = $"C:\\Users\\{userName}\\AppData\\Roaming\\Autodesk\\C3D {acadYear}\\enu\\Plotters\\Plot Styles";
+                }
+                else
+                {
+                    autocadCTBfilePath = $"C:\\Users\\{userName}\\AppData\\Roaming\\Autodesk\\AutoCAD {acadYear}\\R{numberVersion}\\enu\\Plotters\\Plot Styles";
+                }
             }
             catch
             {
