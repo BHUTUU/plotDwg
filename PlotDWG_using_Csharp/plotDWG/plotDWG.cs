@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -66,10 +67,16 @@ namespace plotDWG
             postLispEntry.Enabled = false;
             layoutOrientationDropDownBtn.Items.AddRange(new string[] { "LANDSCAPE", "PORTRAIT" });
             layoutSizeDropDownBtn.Items.AddRange(new string[] { "A0", "A1", "A2", "A3", "A4" });
+
             if (GetAcadVersion() == true)
             {
-                LoadCTBOptions();
+                bool isCtbLoaded = LoadCTBOptions();
 
+                if(!isCtbLoaded)
+                {
+                    MessageBox.Show("Failed to load CTB options. Please check if CONVERTCTB Command opens a valid CTB folder", "CTB Load Error");
+                    Environment.Exit(0);
+                }
             }
             else
             {
@@ -77,20 +84,25 @@ namespace plotDWG
             }
         }
 
-        private void LoadCTBOptions()
+        private bool LoadCTBOptions()
         {
+
             if (Directory.Exists(autocadCTBfilePath))
             {
                 string[] ctbFilesToList = Directory.GetFiles(autocadCTBfilePath, "*.*")
                     .Where(f => f.EndsWith(".ctb", StringComparison.OrdinalIgnoreCase)).ToArray();
                 ctbDropBtn.Items.Clear();
+
                 foreach (string ctbFile in ctbFilesToList)
                 {
                     string ctbFileBaseName = Path.GetFileName(ctbFile);
                     ctbDropBtn.Items.Add(ctbFileBaseName);
                 }
+
+                return true;
             }
 
+            return false;
         }
 
         private void DwgBrowseBtn_Click(object sender, EventArgs e)
@@ -104,15 +116,18 @@ namespace plotDWG
             {
                 foreach (string sf in openFileDialog.FileNames)
                 {
+
                     if (!selectedDWGFiles.Contains(sf))
                     {
                         selectedDWGFiles.Add(sf);
                     }
+
                     if (!drawingsToPlot.Contains(sf))
                     {
                         drawingsToPlot.Add(sf);
                     }
                 }
+
                 MessageBox.Show(string.Join("\n", selectedDWGFiles), "Selected Drawings:");
             }
         }
@@ -151,30 +166,35 @@ namespace plotDWG
         {
             try
             {
-                int try01 = 0;
-                while(try01 <= MAXTRIES)
+                int tryCount = 0;
+                dynamic acad = null;
+
+                while (tryCount <= MAXTRIES)
                 {
                     try
                     {
-                        dynamic acad = Marshal.GetActiveObject("AutoCAD.Application");
+                        acad = Marshal.GetActiveObject("AutoCAD.Application");
                         if (acad != null)
                         {
                             acad.Visible = true;
                             break;
                         }
                     }
-                    catch
+                    catch (COMException)
                     {
-                        Thread.Sleep(1000);
-                        try01++;
-                        continue;
+                        Thread.Sleep(100);
+                        tryCount++;
                     }
                 }
-                //dynamic acad = Marshal.GetActiveObject("AutoCAD.Application");
+
+                if (acad == null)
+                {
+                    throw new InvalidOperationException("Failed to connect to AutoCAD.");
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Please open AutoCAD before proceeding Or there may be problem in connecting with AutoCAD instance, try again!", "Invalid Start");
+                MessageBox.Show($"Error: {ex.Message}", "Invalid Start");
                 return false;
             }
 
