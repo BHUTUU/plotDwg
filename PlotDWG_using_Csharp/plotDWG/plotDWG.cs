@@ -151,12 +151,30 @@ namespace plotDWG
         {
             try
             {
-                dynamic acad = Marshal.GetActiveObject("AutoCAD.Application");
-                acad.Visible = true;
+                int try01 = 0;
+                while(try01 <= MAXTRIES)
+                {
+                    try
+                    {
+                        dynamic acad = Marshal.GetActiveObject("AutoCAD.Application");
+                        if (acad != null)
+                        {
+                            acad.Visible = true;
+                            break;
+                        }
+                    }
+                    catch
+                    {
+                        Thread.Sleep(1000);
+                        try01++;
+                        continue;
+                    }
+                }
+                //dynamic acad = Marshal.GetActiveObject("AutoCAD.Application");
             }
             catch
             {
-                MessageBox.Show("Please open AutoCAD before proceeding!", "Invalid Start");
+                MessageBox.Show("Please open AutoCAD before proceeding Or there may be problem in connecting with AutoCAD instance, try again!", "Invalid Start");
                 return false;
             }
 
@@ -164,7 +182,8 @@ namespace plotDWG
             {
                 dynamic acad = Marshal.GetActiveObject("AutoCAD.Application");
                 acad.Visible = true;
-                bool ifAcadIsCivil3D = acad.Name.ToString().Contains("Civil 3D", StringComparison.OrdinalIgnoreCase);
+                string acadName = acad.Name.ToString();
+                bool ifAcadIsCivil3D = acadName.Contains("Civil 3D");
                 string acadPath = acad.Path.ToString();
                 string acadYear = acadPath.Substring(acadPath.Length - 4, 4);
                 autocadSoftwareYear = acadYear;
