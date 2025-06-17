@@ -5,12 +5,7 @@ A Windows Forms application that simplifies the process of plotting AutoCAD DWG 
 ## Features
 
 - **Multiple File Selection**: Select and manage multiple DWG files for batch processing
-- **Paper Size Options**: Support for standard ISO paper sizes:
-  - A0 (841 x 1189 mm)
-  - A1 (594 x 841 mm)
-  - A2 (420 x 594 mm)
-  - A3 (297 x 420 mm)
-  - A4 (210 x 297 mm)
+- **Paper Size Options**: Support for all standard paper sizes available in DWG to PDF.pc3 are now included in the drop-down menu.
 - **Orientation Control**: Choose between Portrait and Landscape orientations
 - **Custom Output Location**: Select your preferred output folder for the generated PDFs
 - **Drawing Management**: Manage and filter which drawings to plot through a user-friendly interface
