@@ -27,33 +27,97 @@ namespace plotDWG
         bool runningPermission = true;
         bool alreadyRunning = false;
 
-        Dictionary<string, Dictionary<String, String>> paper = new Dictionary<String, Dictionary<String, String>>
+        readonly string[] dwgToPdfPageSizes = new string[]
         {
-            ["A0"] = new Dictionary<String, String>
-            {
-                ["PORTRAIT"] = "ISO full bleed A0 (841.00 x 1189.00 MM)",
-                ["LANDSCAPE"] = "ISO full bleed A0 (1189.00 x 841.00 MM)"
-            },
-            ["A1"] = new Dictionary<String, String>
-            {
-                ["PORTRAIT"] = "ISO full bleed A1 (594.00 x 841.00 MM)",
-                ["LANDSCAPE"] = "ISO full bleed A1 (841.00 x 594.00 MM)"
-            },
-            ["A2"] = new Dictionary<String, String>
-            {
-                ["PORTRAIT"] = "ISO full bleed A2 (420.00 x 594.00 MM)",
-                ["LANDSCAPE"] = "ISO full bleed A2 (594.00 x 420.00 MM)"
-            },
-            ["A3"] = new Dictionary<String, String>
-            {
-                ["PORTRAIT"] = "ISO full bleed A3 (297.00 x 420.00 MM)",
-                ["LANDSCAPE"] = "ISO full bleed A3 (420.00 x 297.00 MM)"
-            },
-            ["A4"] = new Dictionary<String, String>
-            {
-                ["PORTRAIT"] = "ISO full bleed A4 (210.00 x 297.00 MM)",
-                ["LANDSCAPE"] = "ISO full bleed A4 (297.00 x 210.00 MM)"
-            }
+            // ISO full bleed
+            "ISO full bleed B5 (250.00 x 176.00 MM)",
+            "ISO full bleed B5 (176.00 x 250.00 MM)",
+            "ISO full bleed B4 (353.00 x 250.00 MM)",
+            "ISO full bleed B4 (250.00 x 353.00 MM)",
+            "ISO full bleed B3 (500.00 x 353.00 MM)",
+            "ISO full bleed B3 (353.00 x 500.00 MM)",
+            "ISO full bleed B2 (707.00 x 500.00 MM)",
+            "ISO full bleed B2 (500.00 x 707.00 MM)",
+            "ISO full bleed B1 (1000.00 x 707.00 MM)",
+            "ISO full bleed B1 (707.00 x 1000.00 MM)",
+            "ISO full bleed B0 (1414.00 x 1000.00 MM)",
+            "ISO full bleed B0 (1000.00 x 1414.00 MM)",
+            "ISO full bleed A5 (210.00 x 148.00 MM)",
+            "ISO full bleed A5 (148.00 x 210.00 MM)",
+            "ISO full bleed 2A0 (1189.00 x 1682.00 MM)",
+            "ISO full bleed 4A0 (1682.00 x 2378.00 MM)",
+            "ISO full bleed A4 (297.00 x 210.00 MM)",
+            "ISO full bleed A4 (210.00 x 297.00 MM)",
+            "ISO full bleed A3 (420.00 x 297.00 MM)",
+            "ISO full bleed A3 (297.00 x 420.00 MM)",
+            "ISO full bleed A2 (594.00 x 420.00 MM)",
+            "ISO full bleed A2 (420.00 x 594.00 MM)",
+            "ISO full bleed A1 (841.00 x 594.00 MM)",
+            "ISO full bleed A1 (594.00 x 841.00 MM)",
+            "ISO full bleed A0 (1189.00 x 841.00 MM)",
+            "ISO full bleed A0 (841.00 x 1189.00 MM)",
+
+            // ARCH full bleed
+            "ARCH full bleed E1 (30.00 x 42.00 Inches)",
+            "ARCH full bleed E (36.00 x 48.00 Inches)",
+            "ARCH full bleed D (24.00 x 36.00 Inches)",
+            "ARCH full bleed C (18.00 x 24.00 Inches)",
+            "ARCH full bleed B (18.00 x 12.00 Inches)",
+            "ARCH full bleed B (12.00 x 18.00 Inches)",
+            "ARCH full bleed A (12.00 x 9.00 Inches)",
+            "ARCH full bleed A (9.00 x 12.00 Inches)",
+
+            // ANSI full bleed
+            "ANSI full bleed E (34.00 x 44.00 Inches)",
+            "ANSI full bleed D (22.00 x 34.00 Inches)",
+            "ANSI full bleed C (17.00 x 22.00 Inches)",
+            "ANSI full bleed B (11.00 x 17.00 Inches)",
+            "ANSI full bleed A (8.50 x 11.00 Inches)",
+            "ANSI full bleed A (11.00 x 8.50 Inches)",
+
+            // ISO expand
+            "ISO expand A0 (841.00 x 1189.00 MM)",
+            "ISO expand A1 (841.00 x 594.00 MM)",
+            "ISO expand A2 (594.00 x 420.00 MM)",
+            "ISO expand A3 (420.00 x 297.00 MM)",
+            "ISO expand A4 (297.00 x 210.00 MM)",
+
+            // ISO
+            "ISO A0 (841.00 x 1189.00 MM)",
+            "ISO A1 (594.00 x 841.00 MM)",
+            "ISO A2 (420.00 x 594.00 MM)",
+            "ISO A3 (297.00 x 420.00 MM)",
+            "ISO A4 (210.00 x 297.00 MM)",
+
+            // ARCH
+            "ARCH E1 (30.00 x 42.00 Inches)",
+            "ARCH E (36.00 x 48.00 Inches)",
+            "ARCH D (24.00 x 36.00 Inches)",
+            "ARCH C (18.00 x 24.00 Inches)",
+
+            // ARCH expand
+            "ARCH expand E1 (30.00 x 42.00 Inches)",
+            "ARCH expand E (36.00 x 48.00 Inches)",
+            "ARCH expand D (24.00 x 36.00 Inches)",
+            "ARCH expand C (18.00 x 24.00 Inches)",
+
+            // ANSI
+            "ANSI E (34.00 x 44.00 Inches)",
+            "ANSI D (22.00 x 34.00 Inches)",
+            "ANSI C (17.00 x 22.00 Inches)",
+            "ANSI B (11.00 x 17.00 Inches)",
+            "ANSI A (8.50 x 11.00 Inches)",
+
+            // ANSI expand
+            "ANSI expand E (34.00 x 44.00 Inches)",
+            "ANSI expand D (22.00 x 34.00 Inches)",
+            "ANSI expand C (17.00 x 22.00 Inches)",
+            "ANSI expand B (11.00 x 17.00 Inches)",
+            "ANSI expand A (8.50 x 11.00 Inches)",
+
+            // ANSI1
+            "ANSI1 (11.00 x 8.50 Inches)",
+            "ANSI1 A (8.50 x 11.00 Inches)",
         };
 
         private List<string> drawingsToPlot = new List<string>();
@@ -66,7 +130,8 @@ namespace plotDWG
             preLispEntry.Enabled = false;
             postLispEntry.Enabled = false;
             layoutOrientationDropDownBtn.Items.AddRange(new string[] { "LANDSCAPE", "PORTRAIT" });
-            layoutSizeDropDownBtn.Items.AddRange(new string[] { "A0", "A1", "A2", "A3", "A4" });
+            layoutSizeDropDownBtn.Items.AddRange(dwgToPdfPageSizes);
+
 
             if (GetAcadVersion() == true)
             {
@@ -217,6 +282,9 @@ namespace plotDWG
                 else
                 {
                     autocadCTBfilePath = $"C:\\Users\\{userName}\\AppData\\Roaming\\Autodesk\\AutoCAD {acadYear}\\R{numberVersion}\\enu\\Plotters\\Plot Styles";
+
+                    if(!Directory.Exists(autocadCTBfilePath))
+                        autocadCTBfilePath = $"C:\\Users\\{userName}\\AppData\\Roaming\\Autodesk\\C3D {acadYear}\\enu\\Plotters\\Plot Styles";
                 }
             }
             catch
@@ -326,12 +394,26 @@ namespace plotDWG
             }
         }
 
+        private bool HasEvenQuotes(string lispExpression)
+        {
+            int quoteCount = lispExpression.Count(c => c == '"');
+            return quoteCount % 2 == 0;
+        }
+
+
         private async void LauchBtn_Click(object sender, EventArgs e)
         {
             if (alreadyRunning)
             {
-                MessageBox.Show("Plotting already in progress. Please wait...", "In Progress");
-                return;
+                DialogResult wantToCancel = MessageBox.Show("Do you really want to STOP?", "STOP Confirmation", MessageBoxButtons.YesNo);
+                if(wantToCancel == DialogResult.Yes)
+                {
+                    runningPermission = false;
+                    alreadyRunning = false;
+                    launchBtn.Text = "LAUNCH";
+                    progressLabel.Text = "Ready";
+                    return;
+                }
             }
 
             if (drawingsToPlot.Count == 0)
@@ -340,9 +422,15 @@ namespace plotDWG
                 return;
             }
 
-            if (string.IsNullOrEmpty(paperSize) || string.IsNullOrEmpty(paperOrientation))
+            if (string.IsNullOrEmpty(paperOrientation))
             {
-                MessageBox.Show("Please select paper size and orientation.", "Invalid Input");
+                MessageBox.Show("Please select drawing orientation.", "Invalid Input");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(paperSize))
+            {
+                MessageBox.Show("Please select paper size.", "Invalid Input");
                 return;
             }
 
@@ -382,14 +470,40 @@ namespace plotDWG
                 return;
             }
 
+            if(preLispChkBox.Checked && !preLispEntry.Text.ToString().StartsWith("(") && !preLispEntry.Text.ToString().EndsWith(")"))
+            {
+                MessageBox.Show("Please write lisp exression only! Example: (COMMAND \"-XREF\" \"R\" \"*\")", "Invalid PRE-LISP::Lisp Expression");
+                return;
+            }
+
+            if(preLispChkBox.Checked && !HasEvenQuotes(preLispEntry.Text.ToString()))
+            {
+                MessageBox.Show("Please Check the Quotes in the give Lisp Expression!", "Invalid PRE-LISP::Lisp Expression");
+                return;
+            }
+
             if (postLispChkBox.Checked && string.IsNullOrEmpty(postLispEntry.Text))
             {
                 MessageBox.Show("Please enter a post-LISP command.", "Invalid Input");
                 return;
             }
 
+            if(postLispChkBox.Checked && !postLispEntry.Text.ToString().StartsWith("(") && !postLispEntry.Text.ToString().EndsWith(")"))
+            {
+                MessageBox.Show("Please write lisp exression only! Example: (COMMAND \"-XREF\" \"R\" \"*\")", "Invalid POST-LISP::Lisp Expression");
+                return;
+            }
+
+            if (postLispChkBox.Checked && !HasEvenQuotes(postLispEntry.Text.ToString()))
+            {
+                MessageBox.Show("Please Check the Quotes in the give Lisp Expression!", "Invalid POST-LISP::Lisp Expression");
+                return;
+            }
+
             alreadyRunning = true;
+            runningPermission = true;
             progressLabel.Text = "Running..!";
+            launchBtn.Text = "STOP!";
 
             try
             {
@@ -400,12 +514,18 @@ namespace plotDWG
 
                     foreach (string fileToPlot in drawingsToPlot)
                     {
-                        PlotPdfForFile(fileToPlot);
-                        completed++;
-                        Invoke(new Action(() =>
+                        if(runningPermission)
                         {
-                            progressLabel.Text = $"{completed}/{total}";
-                        }));
+                            PlotPdfForFile(fileToPlot);
+                            completed++;
+                            Invoke(new Action(() =>
+                            {
+                                progressLabel.Text = $"{completed}/{total}";
+                            }));
+                        } else
+                        {
+                            break;
+                        }
                     }
                 });
 
@@ -424,6 +544,7 @@ namespace plotDWG
             {
                 alreadyRunning = false;
                 progressLabel.Text = "Ready";
+                launchBtn.Text = "LAUNCH";
             }
         }
 
@@ -468,6 +589,7 @@ namespace plotDWG
                                 continue;
                             }
                         }
+                        return;
                     }
 
                     try
@@ -494,23 +616,23 @@ namespace plotDWG
                                         continue;
                                     }
                                 }
-                                break;
+                                return;
                             }
 
                             string plotCommand = GeneratePlotCommand(layoutToPlot, paperSize, paperOrientation, selectedCTBfile, lineWeightRequired ? "Y" : "N", scaleLineWeightRequired ? "Y" : "N", outputFolderPath, $"{outputFileNamePrefix}{layoutToPlot}{outputFileNameSuffix}.pdf");
 
-                            if (preLispChkBox.Checked && string.IsNullOrEmpty(preLispEntry.Text.ToString()))
+                            if (preLispChkBox.Checked && !string.IsNullOrEmpty(preLispEntry.Text.ToString()))
                             {
-                                autocadInstance.SendCommand(preLispEntry.Text.ToString());
+                                autocadInstance.SendCommand(preLispEntry.Text.ToString() + " ");
                                 Thread.Sleep(1000);
                             }
 
                             autocadInstance.SendCommand(plotCommand);
                             Thread.Sleep(1000);
 
-                            if (postLispChkBox.Checked && string.IsNullOrEmpty(postLispEntry.Text.ToString()))
+                            if (postLispChkBox.Checked && !string.IsNullOrEmpty(postLispEntry.Text.ToString()))
                             {
-                                autocadInstance.SendCommand(postLispEntry.Text.ToString());
+                                autocadInstance.SendCommand(postLispEntry.Text.ToString() + " ");
                                 Thread.Sleep(1000);
                             }
                         }
@@ -554,7 +676,7 @@ namespace plotDWG
         {
             string ouputFinalPDFfilePath = Path.Combine(OutputFolder, OutputFileName);
             string finalOrientation = Orientation.ToUpper() == "PORTRAIT" ? "P" : "L";
-            return $"(command \"-PLOT\" \"Y\" \"{LayoutName}\" \"DWG To PDF.pc3\" \"{paper[PaperType][Orientation]}\" \"M\" \"{finalOrientation}\" \"N\" \"L\" \"1=1\" \"0.00,0.00\" \"Y\" \"{PlotCTB}\" \"{LineWeight}\" \"{ScaleLineWeight}\" \"N\" \"N\" \"{ouputFinalPDFfilePath.Replace("\\", "\\\\")}\" \"N\" \"Y\") ";
+            return $"(command \"-PLOT\" \"Y\" \"{LayoutName}\" \"DWG To PDF.pc3\" \"{PaperType}\" \"M\" \"{finalOrientation}\" \"N\" \"L\" \"1=1\" \"0.00,0.00\" \"Y\" \"{PlotCTB}\" \"{LineWeight}\" \"{ScaleLineWeight}\" \"N\" \"N\" \"{ouputFinalPDFfilePath.Replace("\\", "\\\\")}\" \"N\" \"Y\") ";
         }
 
         private void ScaleLineWeightChkBtn_CheckedChanged(object sender, EventArgs e)
