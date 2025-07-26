@@ -18,6 +18,7 @@ namespace plotDWG
         List<string> drawingFaildToPlot = new List<string>();
         string paperSize = string.Empty;
         string paperOrientation = string.Empty;
+        string plotUnit = string.Empty;
         string outputFolderPath = string.Empty;
         string autocadSoftwareYear = string.Empty;
         string autocadCTBfilePath = string.Empty;
@@ -128,10 +129,9 @@ namespace plotDWG
             prefixEntry.Enabled = false;
             suffixEntry.Enabled = false;
             preLispEntry.Enabled = false;
-            postLispEntry.Enabled = false;
             layoutOrientationDropDownBtn.Items.AddRange(new string[] { "LANDSCAPE", "PORTRAIT" });
             layoutSizeDropDownBtn.Items.AddRange(dwgToPdfPageSizes);
-
+            plotScaleDropBtn.Items.AddRange(new string[] {"MM", "INCHES"});
 
             if (GetAcadVersion() == true)
             {
@@ -434,6 +434,12 @@ namespace plotDWG
                 return;
             }
 
+            if (string.IsNullOrEmpty(plotUnit))
+            {
+                MessageBox.Show("Please select plot unit (MM/INCHES).", "Invalid Input");
+                return;
+            }
+
             if (string.IsNullOrEmpty(outputFolderPath))
             {
                 MessageBox.Show("Please select an output folder.", "Invalid Input");
@@ -479,24 +485,6 @@ namespace plotDWG
             if(preLispChkBox.Checked && !HasEvenQuotes(preLispEntry.Text.ToString()))
             {
                 MessageBox.Show("Please Check the Quotes in the give Lisp Expression!", "Invalid PRE-LISP::Lisp Expression");
-                return;
-            }
-
-            if (postLispChkBox.Checked && string.IsNullOrEmpty(postLispEntry.Text))
-            {
-                MessageBox.Show("Please enter a post-LISP command.", "Invalid Input");
-                return;
-            }
-
-            if(postLispChkBox.Checked && !postLispEntry.Text.ToString().StartsWith("(") && !postLispEntry.Text.ToString().EndsWith(")"))
-            {
-                MessageBox.Show("Please write lisp exression only! Example: (COMMAND \"-XREF\" \"R\" \"*\")", "Invalid POST-LISP::Lisp Expression");
-                return;
-            }
-
-            if (postLispChkBox.Checked && !HasEvenQuotes(postLispEntry.Text.ToString()))
-            {
-                MessageBox.Show("Please Check the Quotes in the give Lisp Expression!", "Invalid POST-LISP::Lisp Expression");
                 return;
             }
 
@@ -629,12 +617,6 @@ namespace plotDWG
 
                             autocadInstance.SendCommand(plotCommand);
                             Thread.Sleep(1000);
-
-                            if (postLispChkBox.Checked && !string.IsNullOrEmpty(postLispEntry.Text.ToString()))
-                            {
-                                autocadInstance.SendCommand(postLispEntry.Text.ToString() + " ");
-                                Thread.Sleep(1000);
-                            }
                         }
 
                         int tryLevel14 = 0;
@@ -676,7 +658,7 @@ namespace plotDWG
         {
             string ouputFinalPDFfilePath = Path.Combine(OutputFolder, OutputFileName);
             string finalOrientation = Orientation.ToUpper() == "PORTRAIT" ? "P" : "L";
-            return $"(command \"-PLOT\" \"Y\" \"{LayoutName}\" \"DWG To PDF.pc3\" \"{PaperType}\" \"M\" \"{finalOrientation}\" \"N\" \"L\" \"1=1\" \"0.00,0.00\" \"Y\" \"{PlotCTB}\" \"{LineWeight}\" \"{ScaleLineWeight}\" \"N\" \"N\" \"{ouputFinalPDFfilePath.Replace("\\", "\\\\")}\" \"N\" \"Y\") ";
+            return $"(command \"-PLOT\" \"Y\" \"{LayoutName}\" \"DWG To PDF.pc3\" \"{PaperType}\" \"{plotUnit}\" \"{finalOrientation}\" \"N\" \"L\" \"1=1\" \"0.00,0.00\" \"Y\" \"{PlotCTB}\" \"{LineWeight}\" \"{ScaleLineWeight}\" \"N\" \"N\" \"{ouputFinalPDFfilePath.Replace("\\", "\\\\")}\" \"N\" \"Y\") ";
         }
 
         private void ScaleLineWeightChkBtn_CheckedChanged(object sender, EventArgs e)
@@ -703,16 +685,14 @@ namespace plotDWG
             }
         }
 
-        private void PostLispChkBox_CheckedChanged(object sender, EventArgs e)
+        private void plotScaleDropBtn_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (postLispChkBox.Checked)
+            plotUnit = plotScaleDropBtn.SelectedItem.ToString().ToUpper() switch
             {
-                postLispEntry.Enabled = true;
-            }
-            else
-            {
-                postLispEntry.Enabled = false;
-            }
+                "MM" => "Millimeters",
+                "INCHES" => "Inches",
+                _ => "Millimeters", // Default to MM if not recognized
+            };
         }
     }
 
@@ -762,7 +742,7 @@ namespace plotDWG
 
         public void Close()
         {
-            doc.Close();
+            doc.Close(false);
         }
     }
 }

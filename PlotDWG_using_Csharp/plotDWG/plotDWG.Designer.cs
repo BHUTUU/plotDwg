@@ -49,10 +49,10 @@
             this.scaleLineWeightChkBtn = new System.Windows.Forms.CheckBox();
             this.preLispEntry = new System.Windows.Forms.TextBox();
             this.preLispChkBox = new System.Windows.Forms.CheckBox();
-            this.postLispEntry = new System.Windows.Forms.TextBox();
-            this.postLispChkBox = new System.Windows.Forms.CheckBox();
             this.progressLabel = new System.Windows.Forms.Label();
             this.paperSizeDropBtn = new System.Windows.Forms.Label();
+            this.plotScaleLabel = new System.Windows.Forms.Label();
+            this.plotScaleDropBtn = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // addDrawingText
@@ -131,7 +131,7 @@
             this.outputFolderText.AutoSize = true;
             this.outputFolderText.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
             this.outputFolderText.ForeColor = System.Drawing.Color.GhostWhite;
-            this.outputFolderText.Location = new System.Drawing.Point(15, 219);
+            this.outputFolderText.Location = new System.Drawing.Point(15, 278);
             this.outputFolderText.Name = "outputFolderText";
             this.outputFolderText.Size = new System.Drawing.Size(156, 24);
             this.outputFolderText.TabIndex = 7;
@@ -141,7 +141,7 @@
             // 
             this.outputBrowseBtn.BackColor = System.Drawing.Color.SkyBlue;
             this.outputBrowseBtn.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
-            this.outputBrowseBtn.Location = new System.Drawing.Point(177, 215);
+            this.outputBrowseBtn.Location = new System.Drawing.Point(177, 274);
             this.outputBrowseBtn.Name = "outputBrowseBtn";
             this.outputBrowseBtn.Size = new System.Drawing.Size(105, 35);
             this.outputBrowseBtn.TabIndex = 6;
@@ -154,7 +154,7 @@
             this.ctbLabel.AutoSize = true;
             this.ctbLabel.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
             this.ctbLabel.ForeColor = System.Drawing.Color.GhostWhite;
-            this.ctbLabel.Location = new System.Drawing.Point(15, 276);
+            this.ctbLabel.Location = new System.Drawing.Point(15, 335);
             this.ctbLabel.Name = "ctbLabel";
             this.ctbLabel.Size = new System.Drawing.Size(49, 24);
             this.ctbLabel.TabIndex = 8;
@@ -165,7 +165,7 @@
             this.ctbDropBtn.BackColor = System.Drawing.Color.SkyBlue;
             this.ctbDropBtn.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
             this.ctbDropBtn.FormattingEnabled = true;
-            this.ctbDropBtn.Location = new System.Drawing.Point(82, 273);
+            this.ctbDropBtn.Location = new System.Drawing.Point(82, 332);
             this.ctbDropBtn.Name = "ctbDropBtn";
             this.ctbDropBtn.Size = new System.Drawing.Size(238, 27);
             this.ctbDropBtn.TabIndex = 9;
@@ -176,7 +176,7 @@
             // 
             this.browseCTBbtn.BackColor = System.Drawing.Color.SkyBlue;
             this.browseCTBbtn.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
-            this.browseCTBbtn.Location = new System.Drawing.Point(334, 268);
+            this.browseCTBbtn.Location = new System.Drawing.Point(334, 327);
             this.browseCTBbtn.Name = "browseCTBbtn";
             this.browseCTBbtn.Size = new System.Drawing.Size(105, 35);
             this.browseCTBbtn.TabIndex = 10;
@@ -189,7 +189,7 @@
             this.lineWeightCheckBtn.AutoSize = true;
             this.lineWeightCheckBtn.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
             this.lineWeightCheckBtn.ForeColor = System.Drawing.Color.GhostWhite;
-            this.lineWeightCheckBtn.Location = new System.Drawing.Point(19, 323);
+            this.lineWeightCheckBtn.Location = new System.Drawing.Point(19, 382);
             this.lineWeightCheckBtn.Name = "lineWeightCheckBtn";
             this.lineWeightCheckBtn.Size = new System.Drawing.Size(280, 28);
             this.lineWeightCheckBtn.TabIndex = 11;
@@ -202,7 +202,7 @@
             this.prefixCheckBtn.AutoSize = true;
             this.prefixCheckBtn.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
             this.prefixCheckBtn.ForeColor = System.Drawing.Color.GhostWhite;
-            this.prefixCheckBtn.Location = new System.Drawing.Point(19, 411);
+            this.prefixCheckBtn.Location = new System.Drawing.Point(19, 470);
             this.prefixCheckBtn.Name = "prefixCheckBtn";
             this.prefixCheckBtn.Size = new System.Drawing.Size(96, 28);
             this.prefixCheckBtn.TabIndex = 12;
@@ -215,7 +215,7 @@
             this.suffixCheckBtn.AutoSize = true;
             this.suffixCheckBtn.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
             this.suffixCheckBtn.ForeColor = System.Drawing.Color.GhostWhite;
-            this.suffixCheckBtn.Location = new System.Drawing.Point(19, 456);
+            this.suffixCheckBtn.Location = new System.Drawing.Point(19, 515);
             this.suffixCheckBtn.Name = "suffixCheckBtn";
             this.suffixCheckBtn.Size = new System.Drawing.Size(95, 28);
             this.suffixCheckBtn.TabIndex = 13;
@@ -226,7 +226,7 @@
             // prefixEntry
             // 
             this.prefixEntry.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
-            this.prefixEntry.Location = new System.Drawing.Point(177, 412);
+            this.prefixEntry.Location = new System.Drawing.Point(177, 471);
             this.prefixEntry.Name = "prefixEntry";
             this.prefixEntry.Size = new System.Drawing.Size(249, 27);
             this.prefixEntry.TabIndex = 14;
@@ -234,7 +234,7 @@
             // suffixEntry
             // 
             this.suffixEntry.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
-            this.suffixEntry.Location = new System.Drawing.Point(177, 457);
+            this.suffixEntry.Location = new System.Drawing.Point(177, 516);
             this.suffixEntry.Name = "suffixEntry";
             this.suffixEntry.Size = new System.Drawing.Size(249, 27);
             this.suffixEntry.TabIndex = 15;
@@ -243,7 +243,7 @@
             // 
             this.launchBtn.BackColor = System.Drawing.Color.SkyBlue;
             this.launchBtn.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
-            this.launchBtn.Location = new System.Drawing.Point(177, 603);
+            this.launchBtn.Location = new System.Drawing.Point(177, 621);
             this.launchBtn.Name = "launchBtn";
             this.launchBtn.Size = new System.Drawing.Size(132, 42);
             this.launchBtn.TabIndex = 16;
@@ -256,7 +256,7 @@
             this.scaleLineWeightChkBtn.AutoSize = true;
             this.scaleLineWeightChkBtn.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
             this.scaleLineWeightChkBtn.ForeColor = System.Drawing.Color.GhostWhite;
-            this.scaleLineWeightChkBtn.Location = new System.Drawing.Point(19, 357);
+            this.scaleLineWeightChkBtn.Location = new System.Drawing.Point(19, 416);
             this.scaleLineWeightChkBtn.Name = "scaleLineWeightChkBtn";
             this.scaleLineWeightChkBtn.Size = new System.Drawing.Size(370, 28);
             this.scaleLineWeightChkBtn.TabIndex = 17;
@@ -267,7 +267,7 @@
             // preLispEntry
             // 
             this.preLispEntry.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
-            this.preLispEntry.Location = new System.Drawing.Point(178, 503);
+            this.preLispEntry.Location = new System.Drawing.Point(178, 562);
             this.preLispEntry.Name = "preLispEntry";
             this.preLispEntry.Size = new System.Drawing.Size(249, 27);
             this.preLispEntry.TabIndex = 19;
@@ -277,7 +277,7 @@
             this.preLispChkBox.AutoSize = true;
             this.preLispChkBox.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
             this.preLispChkBox.ForeColor = System.Drawing.Color.GhostWhite;
-            this.preLispChkBox.Location = new System.Drawing.Point(20, 502);
+            this.preLispChkBox.Location = new System.Drawing.Point(20, 561);
             this.preLispChkBox.Name = "preLispChkBox";
             this.preLispChkBox.Size = new System.Drawing.Size(112, 28);
             this.preLispChkBox.TabIndex = 18;
@@ -285,33 +285,12 @@
             this.preLispChkBox.UseVisualStyleBackColor = true;
             this.preLispChkBox.CheckedChanged += new System.EventHandler(this.PreLispChkBox_CheckedChanged);
             // 
-            // postLispEntry
-            // 
-            this.postLispEntry.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
-            this.postLispEntry.Location = new System.Drawing.Point(177, 550);
-            this.postLispEntry.Name = "postLispEntry";
-            this.postLispEntry.Size = new System.Drawing.Size(249, 27);
-            this.postLispEntry.TabIndex = 21;
-            // 
-            // postLispChkBox
-            // 
-            this.postLispChkBox.AutoSize = true;
-            this.postLispChkBox.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
-            this.postLispChkBox.ForeColor = System.Drawing.Color.GhostWhite;
-            this.postLispChkBox.Location = new System.Drawing.Point(19, 549);
-            this.postLispChkBox.Name = "postLispChkBox";
-            this.postLispChkBox.Size = new System.Drawing.Size(123, 28);
-            this.postLispChkBox.TabIndex = 20;
-            this.postLispChkBox.Text = "POST-LISP:";
-            this.postLispChkBox.UseVisualStyleBackColor = true;
-            this.postLispChkBox.CheckedChanged += new System.EventHandler(this.PostLispChkBox_CheckedChanged);
-            // 
             // progressLabel
             // 
             this.progressLabel.AutoSize = true;
             this.progressLabel.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
             this.progressLabel.ForeColor = System.Drawing.Color.GhostWhite;
-            this.progressLabel.Location = new System.Drawing.Point(353, 611);
+            this.progressLabel.Location = new System.Drawing.Point(353, 629);
             this.progressLabel.Name = "progressLabel";
             this.progressLabel.Size = new System.Drawing.Size(59, 24);
             this.progressLabel.TabIndex = 22;
@@ -328,16 +307,39 @@
             this.paperSizeDropBtn.TabIndex = 23;
             this.paperSizeDropBtn.Text = "PAPER SIZE:";
             // 
+            // plotScaleLabel
+            // 
+            this.plotScaleLabel.AutoSize = true;
+            this.plotScaleLabel.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold);
+            this.plotScaleLabel.ForeColor = System.Drawing.Color.GhostWhite;
+            this.plotScaleLabel.Location = new System.Drawing.Point(15, 223);
+            this.plotScaleLabel.Name = "plotScaleLabel";
+            this.plotScaleLabel.Size = new System.Drawing.Size(102, 24);
+            this.plotScaleLabel.TabIndex = 24;
+            this.plotScaleLabel.Text = "PLOT UNIT:";
+            // 
+            // plotScaleDropBtn
+            // 
+            this.plotScaleDropBtn.BackColor = System.Drawing.Color.SkyBlue;
+            this.plotScaleDropBtn.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
+            this.plotScaleDropBtn.FormattingEnabled = true;
+            this.plotScaleDropBtn.Location = new System.Drawing.Point(140, 220);
+            this.plotScaleDropBtn.Name = "plotScaleDropBtn";
+            this.plotScaleDropBtn.Size = new System.Drawing.Size(141, 27);
+            this.plotScaleDropBtn.TabIndex = 25;
+            this.plotScaleDropBtn.Text = "SELECT";
+            this.plotScaleDropBtn.SelectedIndexChanged += new System.EventHandler(this.plotScaleDropBtn_SelectedIndexChanged);
+            // 
             // PlotDWG
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(466, 662);
+            this.ClientSize = new System.Drawing.Size(466, 682);
+            this.Controls.Add(this.plotScaleDropBtn);
+            this.Controls.Add(this.plotScaleLabel);
             this.Controls.Add(this.paperSizeDropBtn);
             this.Controls.Add(this.progressLabel);
-            this.Controls.Add(this.postLispEntry);
-            this.Controls.Add(this.postLispChkBox);
             this.Controls.Add(this.preLispEntry);
             this.Controls.Add(this.preLispChkBox);
             this.Controls.Add(this.scaleLineWeightChkBtn);
@@ -360,7 +362,6 @@
             this.Controls.Add(this.addDrawingText);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(484, 709);
             this.MinimumSize = new System.Drawing.Size(484, 709);
             this.Name = "PlotDWG";
             this.Text = "PLOT DWG";
@@ -391,9 +392,9 @@
         private System.Windows.Forms.CheckBox scaleLineWeightChkBtn;
         private System.Windows.Forms.TextBox preLispEntry;
         private System.Windows.Forms.CheckBox preLispChkBox;
-        private System.Windows.Forms.TextBox postLispEntry;
-        private System.Windows.Forms.CheckBox postLispChkBox;
         private System.Windows.Forms.Label progressLabel;
         private System.Windows.Forms.Label paperSizeDropBtn;
+        private System.Windows.Forms.Label plotScaleLabel;
+        private System.Windows.Forms.ComboBox plotScaleDropBtn;
     }
 }
